@@ -7,6 +7,8 @@ class Solution < ActiveRecord::Base
 
   scope :complete, -> { where status: "closed" }
 
+  before_create { self.html_url ||= remote.html_url }
+
   def remote
     @_remote ||= $octoclient.issue repo, number
   end
@@ -15,9 +17,5 @@ class Solution < ActiveRecord::Base
     if status != "closed" && remote.state == "closed"
       update_attributes status: "closed", completed_at: remote.closed_at
     end
-  end
-
-  def html_url
-    remote.html_url
   end
 end

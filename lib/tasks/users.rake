@@ -5,7 +5,7 @@ namespace :users do
   task :populate => :environment do
     puts "Populating users from GitHub".colorize :light_green
 
-    org = Menu.select "Which org?", Organization.all, :login
+    org = Menu.select "Which org?", Organization.all, :name
 
     puts
     puts "Adding members for #{org.name.colorize :light_green}"
@@ -18,7 +18,7 @@ namespace :users do
 
   desc 'Randomize members on a specified team'
   task :shuffle => :environment do
-    team = Menu.select "Which team?", Team.all, :title
+    team = Menu.select "Which team?", Team.all, :title, default: Team.active
     team.members.shuffle.each_with_index do |user, i|
       puts "#{i+1} #{'-'.colorize :light_black} #{user.name}"
     end

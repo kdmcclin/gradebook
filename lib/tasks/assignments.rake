@@ -4,7 +4,7 @@ namespace :assignments do
   task :new => :environment do
     puts "Creating a new assignment"
 
-    path  = ask "Path to Markdown file (org/repo/path) >" do |q|
+    path = ask "Path to Markdown file (org/repo/path) >" do |q|
       q.validate = /\w+/
     end
     raw   = Assignment.raw_url path
@@ -25,8 +25,12 @@ namespace :assignments do
 
     assignment = Assignment.where(path: path, due_at: due_at).first_or_create!
 
-    team = Menu.select "Assign to team", Team.all, :title
-    team.assign! assignment
+    team = Menu.select "Assign to team", Team.all, :title, optional: true, default: Team.active
+    team.assign! assignment if team
+
+    if assignment.solutions.any?
+      puts "Assigned to #{assignment.solutions.count} users"
+    end
   end
 
 
@@ -60,10 +64,13 @@ namespace :assignments do
   end
 
   desc "Produce a CSV containing solution information"
-  task :report do
-    # FIXME: should produce a CSV with solution submission times and links for each
-    #   user on a given team
-    raise NotImplementedError
+  task :report => :environment do
+    team = Menu.select "Report on which team?", Team.all, :title, default: Team.active
+    path = ask "Save to > " do |q|
+      q.readline = true
+      q.default  = "#{team.name}-#{Time.now.strftime '%Y%m%d%H%M%S'}.csv"
+    end
+    team.report path
   end
 
 end
