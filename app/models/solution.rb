@@ -5,17 +5,24 @@ class Solution < ActiveRecord::Base
   validates :repo, presence: true
   validates :number, presence: true, uniqueness: { scope: :repo }
 
+  scope :incomplete, -> { where status: "assigned" }
   scope :complete, -> { where status: "closed" }
 
-  before_create { self.html_url ||= remote.html_url }
-
-  def remote
-    @_remote ||= $octoclient.issue repo, number
+  def complete?
+    status.to_s == "closed"
   end
 
-  def check!
-    if status != "closed" && remote.state == "closed"
-      update_attributes status: "closed", completed_at: remote.closed_at
+  def html_url
+    "https://github.com/#{repo}/issues/#{number}"
+  end
+
+  def remote octoclient
+    @_remote ||= octoclient.issue repo, number
+  end
+
+  def check! octoclient
+    if status != "closed" && remote(octoclient).state == "closed"
+      update_attributes status: "closed", completed_at: remote(octoclient).closed_at
     end
   end
 end

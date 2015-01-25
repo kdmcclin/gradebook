@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  devise :omniauthable
+  devise :omniauthable, omniauth_providers: [:github]
 
   validates :github_username, presence: true, uniqueness: true
 
@@ -14,5 +14,13 @@ class User < ActiveRecord::Base
 
   def name
     super || github_username
+  end
+
+  def github_url
+    "https://github.com/#{github_username}"
+  end
+
+  def active_team
+    Team.find active_team_id if active_team_id
   end
 end

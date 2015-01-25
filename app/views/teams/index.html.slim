@@ -1,0 +1,22 @@
+= link_to 'Import Team', new_team_path, class: 'btn btn-default'
+
+table.table.table-striped
+  thead
+    tr
+      th Organization
+      th Name
+      th Members
+      th
+  tbody
+    - @teams.group_by(&:organization).each do |o, ts|
+      - ts.each_with_index do |t,i|
+        tr
+          td= o if i.zero?
+          td= link_to t.name, t
+          td= t.members.count
+          td
+            - if t == current_user.active_team
+              a.btn.btn-success
+                = icon :ok
+            - else
+              = link_to 'Activate', activate_team_path(t), class: 'btn btn-default', method: :post

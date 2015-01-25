@@ -1,0 +1,8 @@
+h1 New Assignment
+
+= form_for @assignment do |f|
+  .form-group
+    = f.text_field :gist_id, placeholder: 'Gist id', class: 'form-control'
+  .form-group
+    = f.datetime_local_field :due_at, class: 'form-control'
+  button.btn.btn-primary Save

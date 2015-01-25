@@ -1,0 +1,3 @@
+= form_tag teams_path
+  = select_tag :organization, options_from_collection_for_select(@organizations, :login, :login), class: 'form-control'
+  button.btn.btn-primary Import

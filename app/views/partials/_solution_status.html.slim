@@ -1,0 +1,7 @@
+= link_to solution.html_url do
+  - if solution.complete?
+    = icon :ok
+    ' 
+    = format_datetime solution.completed_at
+  - else
+    = icon :pencil

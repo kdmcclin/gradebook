@@ -1,0 +1,22 @@
+h1
+  = @assignment.title
+  ' 
+  small due #{format_datetime @assignment.due_at}
+
+.row
+  .col-md-6
+    h2
+      ' Solutions 
+      = render partial: 'partials/check_button', locals: { assignment: @assignment }
+    table.table.table-striped
+      thead
+        tr
+          th User
+          th Status
+      tbody
+        - @assignment.solutions.each do |solution|
+          tr
+            td= link_to solution.user.name, solution.user.github_url
+            td= render partial: 'partials/solution_status', locals: { solution: solution }
+  .col-md-6.well
+    = @assignment.markdown

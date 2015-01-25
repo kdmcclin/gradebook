@@ -11,12 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150125132533) do
+ActiveRecord::Schema.define(version: 20150126184741) do
 
   create_table "assignments", force: :cascade do |t|
     t.string   "title"
-    t.string   "path"
     t.datetime "due_at"
+    t.datetime "checked_at"
+    t.text     "body"
+    t.string   "gist_id"
   end
 
   create_table "solutions", force: :cascade do |t|
@@ -41,7 +43,6 @@ ActiveRecord::Schema.define(version: 20150125132533) do
     t.string  "name"
     t.integer "organization_id"
     t.integer "team_id"
-    t.boolean "active"
   end
 
   create_table "users", force: :cascade do |t|
@@ -59,6 +60,9 @@ ActiveRecord::Schema.define(version: 20150125132533) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "github_username"
+    t.integer  "active_team_id"
+    t.string   "github_access_token"
+    t.boolean  "admin"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
