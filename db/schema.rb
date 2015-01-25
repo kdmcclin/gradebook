@@ -11,27 +11,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150124222840) do
+ActiveRecord::Schema.define(version: 20150124230413) do
 
   create_table "assignments", force: :cascade do |t|
-    t.string   "url"
+    t.string   "path"
     t.datetime "due_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "solutions", force: :cascade do |t|
     t.integer  "assignment_id"
     t.integer  "user_id"
-    t.string   "issue_id"
+    t.string   "repo"
+    t.integer  "number"
     t.string   "status"
     t.datetime "completed_at"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
 
+  create_table "team_memberships", force: :cascade do |t|
+    t.integer  "team_id"
+    t.integer  "user_id"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string   "organization"
+    t.string   "name"
+    t.integer  "organization_id"
+    t.integer  "team_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
+    t.string   "name",                   default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -44,7 +56,6 @@ ActiveRecord::Schema.define(version: 20150124222840) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "github_username"
-    t.string   "role"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
