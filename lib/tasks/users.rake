@@ -5,27 +5,13 @@ namespace :users do
   task :populate => :environment do
     puts "Populating users from GitHub".colorize :light_green
 
-    orgs = $octoclient.user.rels[:organizations].get
-    org  = Menu.select "Which org?", orgs.data.reverse, :login
+    org = Menu.select "Which org?", Organization.all, :login
 
     puts
-    puts "Adding members for #{org.login.colorize :light_green}"
+    puts "Adding members for #{org.name.colorize :light_green}"
 
-    $octoclient.organization_teams(org.login).each do |team_data|
-      team = Team.where(
-        organization:    org.login,
-        organization_id: org.id,
-        name:            team_data.name,
-        team_id:         team_data.id
-      ).first_or_create!
-
-      team_data.rels[:members].get.data.each do |member|
-        user = User.where(github_username: member.login).first_or_create! do |u|
-          u.name = $octoclient.user(member.login).name
-        end
-        team.members << user
-      end
-
+    org.load_teams!
+    org.teams.each do |team|
       puts "#{team.name} has #{team.members.count} members"
     end
   end
