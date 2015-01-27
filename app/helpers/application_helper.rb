@@ -9,11 +9,11 @@ module ApplicationHelper
     ApplicationHelper.format_datetime dt
   end
 
-  def checked_age assignment
-    if assignment.checked_at
-      "#{time_ago_in_words assignment.checked_at} ago"
+  def time_relative_to_due_at due_at, submitted
+    if due_at - 1.day < submitted && submitted <= due_at
+      submitted.in_time_zone("EST").strftime "%I:%M%P"
     else
-      "Never been checked"
+      format_datetime submitted
     end
   end
 

@@ -21,3 +21,10 @@ Other things to know:
 
 * Webhooks should take care of watching for completed issues.
 * "Assigning" is idempotent
+
+## TODO
+
+* Fix timezone handling
+* Better validation and API error handling
+* Put some divs on it
+* Ensure webhooks are always firing, or set up a periodic job to check, or both

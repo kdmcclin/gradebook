@@ -2,6 +2,6 @@
   - if solution.complete?
     = icon :ok
     ' 
-    = format_datetime solution.completed_at
+    = time_relative_to_due_at assignment.due_at, solution.completed_at
   - else
     = icon :pencil

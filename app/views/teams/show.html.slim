@@ -18,4 +18,4 @@ table.table.table-striped.table-condensed
         - @assignments.each do |a|
           td
             - if solution = @solutions[ [a.id, m.id] ]
-              = render partial: 'partials/solution_status', locals: { solution: solution }
+              = render partial: 'partials/solution_status', locals: { solution: solution, assignment: a }
