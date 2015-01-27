@@ -1,6 +1,7 @@
 class Team < ActiveRecord::Base
   has_many :memberships, class_name: 'TeamMembership', dependent: :destroy
   has_many :members, through: :memberships, source: :user
+  has_many :assignments
 
   validates_presence_of :organization, :name, :organization_id, :team_id, :issues_repo
   validates_uniqueness_of :name, scope: :organization

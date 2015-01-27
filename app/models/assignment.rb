@@ -1,4 +1,5 @@
 class Assignment < ActiveRecord::Base
+  belongs_to :team
   has_many :solutions, dependent: :destroy
 
   validates :gist_id, presence: true, uniqueness: true

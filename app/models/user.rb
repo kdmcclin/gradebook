@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
 
   has_many :solutions
 
+  scope :with_github_access, -> { where "'github_access_token' IS NOT NULL" }
+
   before_create do |user|
     user.email = "#{user.github_username}@github.com" unless user.email.present?
   end
