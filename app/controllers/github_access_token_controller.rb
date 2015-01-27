@@ -1,4 +1,6 @@
 class GithubAccessTokenController < ApplicationController
+  skip_before_filter :require_access_token!
+
   def edit
   end
 

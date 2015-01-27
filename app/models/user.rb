@@ -23,4 +23,10 @@ class User < ActiveRecord::Base
   def active_team
     Team.find active_team_id if active_team_id
   end
+
+  def octoclient
+    if github_access_token
+      @_octoclient ||= Octokit::Client.new access_token: github_access_token
+    end
+  end
 end

@@ -1,3 +1,5 @@
+Rails.application.routes.default_url_options[:host] = 'greatbook.herokuapp.com'
+
 Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks" }
 
@@ -21,6 +23,8 @@ Rails.application.routes.draw do
 
   get  '/user/access_token' => 'github_access_token#edit'
   post '/user/access_token' => 'github_access_token#update'
+
+  post '/hooks/issues' => 'solutions#receive_hook', as: :receive_solutions_hook
 
   root to: 'static_pages#root'
 end

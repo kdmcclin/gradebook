@@ -12,18 +12,29 @@ class TeamsController < ApplicationController
   end
 
   def new
-    # FIXME: breaks if `octoclient` returns a redirect
-    @organizations = octoclient.organizations.reverse
+    @team = Team.new
   end
 
   def create
-    org_data = octoclient.organizations.find { |o| o.login == params[:organization] }
-    Organization.new(octoclient, org_data).load_teams!
-    redirect_to teams_path
+    @team = Team.new create_params
+    @team.lookup_on_github! octoclient
+    if @team.save
+      @team.sync! octoclient
+      @team.create_issue_tracking_webhook! if Rails.env.production?
+      redirect_to @team, success: 'Team created'
+    else
+      render :new
+    end
   end
 
   def activate
     current_user.update_attribute :active_team_id, params[:id]
     redirect_to :back
+  end
+
+  private
+
+  def create_params
+    params.require(:team).permit :organization, :name, :issues_repo
   end
 end
