@@ -1,6 +1,10 @@
 class AssignmentsController < ApplicationController
   def index
-    @assignments = Assignment.all
+    @assignments = if params[:all]
+      Assignment.all
+    else
+      Assignment.where team: current_user.active_team
+    end
   end
 
   def show
@@ -13,6 +17,7 @@ class AssignmentsController < ApplicationController
 
   def create
     @assignment = Assignment.new create_params
+    @assignment.team = current_user.active_team
     @assignment.sync_from_gist! octoclient
     if @assignment.save
       redirect_to @assignment, success: 'Assignment created'
