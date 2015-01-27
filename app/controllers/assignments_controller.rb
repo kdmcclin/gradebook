@@ -22,7 +22,7 @@ class AssignmentsController < ApplicationController
     if @assignment.save
       redirect_to @assignment, success: 'Assignment created'
     else
-      render :show
+      render :new
     end
   end
 

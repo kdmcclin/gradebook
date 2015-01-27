@@ -4,7 +4,6 @@ class Assignment < ActiveRecord::Base
 
   validates :gist_id, presence: true, uniqueness: true
   validates :title, presence: true
-  validates :body, presence: true
 
   default_scope -> { order due_at: :asc }
 
@@ -13,12 +12,18 @@ class Assignment < ActiveRecord::Base
     self.due_at ||= DateTime.new tomorrow.year, tomorrow.month, tomorrow.day, 9, 0, 0, "EST"
   end
 
+  validate :found_gist_body
+  def found_gist_body
+    errors.add :gist_id, "not found" if body.nil?
+  end
+
   # TODO: add after_update hook to sync issues
   def sync_from_gist! octoclient
     name, file = octoclient.gist(gist_id).files.first
-    # TODO: handle failure better
     self.body  = file.content
     self.title = name.to_s.gsub(/\.md$/, '').gsub('_', ' ').capitalize
+  rescue Octokit::NotFound => e
+    self.body = nil
   end
 
   def as_issue

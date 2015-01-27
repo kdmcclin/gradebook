@@ -20,10 +20,10 @@ class TeamsController < ApplicationController
 
   def create
     @team = Team.new create_params
-    @team.lookup_on_github! octoclient
+    @team.fetch_from_github! octoclient
     if @team.save
       @team.sync! octoclient
-      @team.create_issue_tracking_webhook! if Rails.env.production?
+      @team.create_issue_tracking_webhook! octoclient if Rails.env.production?
       redirect_to @team, success: 'Team created'
     else
       render :new

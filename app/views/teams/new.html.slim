@@ -1,6 +1,8 @@
 h1 New Team
 
 = form_for @team do |f|
+  = render partial: 'partials/form_errors', locals: { object: @team }
+
   .form-group
     = f.text_field :organization, placeholder: 'Organization', class: 'form-control'
   .form-group
