@@ -46,12 +46,6 @@ class AssignmentsController < ApplicationController
     redirect_to :back, success: 'Assigned issues'
   end
 
-  def check
-    assignment = Assignment.find params[:id]
-    assignment.check! octoclient
-    redirect_to :back
-  end
-
   private
 
   def create_params

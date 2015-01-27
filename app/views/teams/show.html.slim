@@ -8,10 +8,7 @@ table.table.table-striped.table-condensed
     tr
       th
       - @assignments.each do |a|
-        th
-          = link_to a.title, a
-          '
-          = render partial: 'partials/check_button', locals: { assignment: a }
+        th= link_to a.title, a
   tbody
     - @team.members.each do |m|
       tr
