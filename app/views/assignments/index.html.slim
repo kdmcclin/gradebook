@@ -1,9 +1,11 @@
-= link_to 'New Assignment', new_assignment_path, class: 'btn btn-default'
+= link_to new_assignment_path, class: 'btn btn-success'
+  = icon :plus
+  '  Assignment
 
 table.table.table-striped
   thead
     tr
-      th Title
+      th
       th Due
       th= icon :pencil
       th= icon :ok
@@ -15,8 +17,4 @@ table.table.table-striped
         td= format_datetime a.due_at
         td= a.solutions.incomplete.count
         td= a.solutions.complete.count
-        td
-          - if current_user.active_team
-            = link_to assign_assignment_path(a), class: 'btn btn-default', method: :post do
-              ' Assign 
-              small to #{current_user.active_team.name}
+        td= render partial: 'assign_to_active_team_btn', locals: { assignment: a }

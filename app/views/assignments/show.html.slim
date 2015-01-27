@@ -3,6 +3,8 @@ h1
   ' 
   small due #{format_datetime @assignment.due_at}
 
+= render partial: 'assign_to_active_team_btn', locals: { assignment: @assignment }
+
 .row
   .col-md-6
     h2 Solutions

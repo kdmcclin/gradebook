@@ -3,7 +3,9 @@ h1
   ' 
   small= @team.organization
 
-= link_to 'Shuffle', team_path(@team, shuffle: true), class: 'btn btn-default'
+.btn-group
+  = link_to 'Shuffle', team_path(@team, shuffle: true), class: 'btn btn-default'
+  = link_to 'Sync', sync_team_path(@team), class: 'btn btn-default', method: :post
 
 table.table.table-striped.table-condensed
   thead

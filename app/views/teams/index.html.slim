@@ -1,24 +1,25 @@
-= link_to 'Add Team', new_team_path, class: 'btn btn-default'
+= link_to new_team_path, class: 'btn btn-success'
+  = icon :plus
+  '  Team
 
 table.table.table-striped
   thead
     tr
-      th Organization
-      th Name
+      th
+      th Assignments
       th Members
       th
       th
   tbody
-    - @teams.group_by(&:organization).each do |o, ts|
-      - ts.each_with_index do |t,i|
-        tr
-          td= o if i.zero?
-          td= link_to t.name, t
-          td= t.members.count
-          td
-            - if t == current_user.active_team
-              a.btn.btn-success
-                = icon :ok
-            - else
-              = link_to 'Activate', activate_team_path(t), class: 'btn btn-default', method: :post
-          td= link_to 'Sync', sync_team_path(t), class: 'btn btn-default', method: :post
+    - @teams.each do |t|
+      tr
+        td= link_to t.title, t
+        td= t.assignments.count
+        td= t.members.count
+        td
+          - if t == current_user.active_team
+            a.btn.btn-success
+              = icon :ok
+          - else
+            = link_to 'Activate', activate_team_path(t), class: 'btn btn-default', method: :post
+        td= link_to 'Sync', sync_team_path(t), class: 'btn btn-default', method: :post
