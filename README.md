@@ -6,7 +6,7 @@ An app to help assigninging and tracking homework via Github issues. It assumes:
 * You want to assign homework from a (possibly secret) Gist
 * You have a dedicated repo where you intend to assign issues to each student, for each assignment
 
-If that matches your use case, a gradebook is running at [greatbook.herokuapp.com](greatbook.herokuapp.com) that you should be able to jump on and use. If it doesn't either [get in touch with me](mailto:james@theironyard.com) or just fork it.
+If that matches your use case, a gradebook is running at [greatbook.herokuapp.com](http://greatbook.herokuapp.com) that you should be able to jump on and use. If it doesn't either [get in touch with me](mailto:james@theironyard.com) or just fork it.
 
 ## Using the web UI
 
