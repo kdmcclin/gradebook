@@ -35,6 +35,11 @@ class TeamsController < ApplicationController
     redirect_to :back
   end
 
+  def sync
+    Team.find(params[:id]).sync! octoclient
+    redirect_to :back
+  end
+
   private
 
   def create_params

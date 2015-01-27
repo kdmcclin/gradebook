@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     member do
       get :shuffle # For picking a random student / teams
       post :activate
+      post :sync
     end
   end
 

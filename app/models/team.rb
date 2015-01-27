@@ -1,5 +1,5 @@
 class Team < ActiveRecord::Base
-  has_many :memberships, class_name: 'TeamMembership'
+  has_many :memberships, class_name: 'TeamMembership', dependent: :destroy
   has_many :members, through: :memberships, source: :user
 
   validates_presence_of :organization, :name, :organization_id, :team_id, :issues_repo
@@ -37,7 +37,8 @@ class Team < ActiveRecord::Base
   def sync! octoclient
     octoclient.team_members(team_id).each do |member|
       user = User.where(github_username: member.login).first_or_create! do |u|
-        u.name = octoclient.user(member.login).name
+        gh_user = octoclient.user member.login
+        u.name  = gh_user.name || gh_user.login
       end
       members << user unless members.include? user
     end
