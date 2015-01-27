@@ -6,6 +6,9 @@ class TeamsController < ApplicationController
   def show
     @team = Team.find params[:id]
 
+    @members = @team.members.to_a
+    @members.shuffle! if params[:shuffle]
+
     @solutions = Solution.where(user: @team.members).
       map { |s| [[s.assignment_id, s.user_id], s] }.to_h
     @assignments = Assignment.find @solutions.keys.map(&:first).uniq.sort

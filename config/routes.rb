@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
   resources :teams, only: [:index, :show, :new, :create] do
     member do
+      get :shuffle # For picking a random student / teams
       post :activate
     end
   end

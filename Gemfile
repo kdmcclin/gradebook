@@ -20,7 +20,6 @@ gem 'omniauth'
 gem 'omniauth-github'
 
 gem 'colorize'
-gem 'highline', require: 'highline/import'
 gem 'httparty'
 gem 'figaro'
 gem 'octokit'

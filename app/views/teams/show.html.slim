@@ -3,6 +3,8 @@ h1
   ' 
   small= @team.organization
 
+= link_to 'Shuffle', team_path(@team, shuffle: true), class: 'btn btn-default'
+
 table.table.table-striped.table-condensed
   thead
     tr
@@ -10,7 +12,7 @@ table.table.table-striped.table-condensed
       - @assignments.each do |a|
         th= link_to a.title, a
   tbody
-    - @team.members.each do |m|
+    - @members.each do |m|
       tr
         td= link_to m.name, m.github_url
         - @assignments.each do |a|
