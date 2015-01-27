@@ -21,6 +21,7 @@ Other things to know:
 
 * Webhooks should take care of watching for completed issues.
 * "Assigning" is idempotent
+* You can add ?all=true to the assignments index to see other class assignments
 
 ## TODO
 
@@ -28,3 +29,4 @@ Other things to know:
 * Better validation and API error handling
 * Put some divs on it
 * Ensure webhooks are always firing, or set up a periodic job to check, or both
+* Lockdown permissions? Other than team membership and potentially centralizing access to private assignment gists, this should all be public information.
