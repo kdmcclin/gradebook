@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :require_access_token!
 
   def require_access_token!
-    unless current_user.github_access_token
+    if current_user && !current_user.github_access_token
       session[:add_github_access_token_return] = request.path
       redirect_to user_access_token_path and return
     end
