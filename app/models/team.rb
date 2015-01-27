@@ -1,62 +1,59 @@
 class Team < ActiveRecord::Base
-  has_many :memberships, class_name: 'TeamMembership'
+  has_many :memberships, class_name: 'TeamMembership', dependent: :destroy
   has_many :members, through: :memberships, source: :user
+  has_many :assignments
 
-  def self.active
-    options = where active: true
-    unless options.count == 1
-      raise "Found #{options.count} active teams. Panicking."
-    end
-    options.first
-  end
+  validates_presence_of :organization, :name, :organization_id, :team_id, :issues_repo
+  validates_uniqueness_of :name, scope: :organization
 
   def title
-    "#{organization}/#{name}"
+    "#{organization}/#{name}" if organization.present? && name.present?
   end
 
-  def repo
-    # TODO: make this customizable?
-    "#{organization}/course-notes"
+  def lookup_on_github! octoclient
+    # FIXME: recover gracefully from these errors and attach as validation
+    #   failures
+    gh_org = octoclient.organization organization
+    self.organization_id = gh_org.id
+
+    gh_team = octoclient.organization_teams(organization).find do |t|
+      t.name.downcase == name.downcase
+    end
+    self.team_id = gh_team.id
+
+    gh_repo = octoclient.repo "#{organization}/#{issues_repo}"
   end
 
-  def assign! assignment
+  def create_issue_tracking_webhook! octoclient
+    octoclient.create_hook "#{organization}/#{issues_repo}", "web", {
+      url: Rails.application.routes.url_helpers.receive_solutions_hook_url,
+      secret: ENV.fetch('GITHUB_WEBHOOK_SECRET'),
+      content_type: 'json'
+    }, {
+      events: ['issues'],
+      active: true
+    }
+  end
+
+  def sync! octoclient
+    octoclient.team_members(team_id).each do |member|
+      user = User.where(github_username: member.login).first_or_create! do |u|
+        gh_user = octoclient.user member.login
+        u.name  = gh_user.name || gh_user.login
+      end
+      members << user unless members.include? user
+    end
+  end
+
+  def assign! octoclient, assignment
     members.each do |member|
       member.solutions.where(assignment: assignment).first_or_create! do |solution|
 
-        issue = $octoclient.open_issue repo, assignment.title, assignment.as_issue,
+        issue = octoclient.open_issue issues_repo, assignment.title, assignment.as_issue,
           assignee: member.github_username, labels: 'homework'
-
-        solution.repo   = repo
         solution.number = issue.number
+        solution.repo   = issues_repo
         solution.status = :assigned
-      end
-    end
-  end
-
-  def report path
-    solutions = Solution.where(user: members).map { |s| [[s.assignment_id, s.user_id], s] }.to_h
-    assignments = Assignment.find solutions.keys.map(&:first).uniq.sort
-
-    CSV.open path, "w" do |csv|
-      row = ['', '']
-      assignments.each { |a| row += [a.title, ''] }
-      csv << row
-
-      row = ['User', 'Github']
-      assignments.each { |a| row += [a.html_url, a.due_at] }
-      csv << row
-
-      members.each do |member|
-        row = [member.name, member.github_username]
-        assignments.each do |a|
-          solution = solutions[ [a.id, member.id] ]
-          row += if solution
-            [solution.html_url, solution.completed_at]
-          else
-            ['', '']
-          end
-        end
-        csv << row
       end
     end
   end

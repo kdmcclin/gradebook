@@ -1,0 +1,7 @@
+= link_to solution.html_url do
+  - if solution.complete?
+    = icon :ok
+    ' 
+    = time_relative_to_due_at assignment.due_at, solution.completed_at
+  - else
+    = icon :pencil

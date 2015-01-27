@@ -1,0 +1,10 @@
+h1 New Team
+
+= form_for @team do |f|
+  .form-group
+    = f.text_field :organization, placeholder: 'Organization', class: 'form-control'
+  .form-group
+    = f.text_field :name, placeholder: 'Team name', class: 'form-control'
+  .form-group
+    = f.text_field :issues_repo, placeholder: 'Repo for issues', class: 'form-control'
+  button.btn.btn-primary Save
