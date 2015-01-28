@@ -44,6 +44,10 @@ class Team < ActiveRecord::Base
     "#{organization}/#{name}" if organization.present? && name.present?
   end
 
+  def fulll_qualified_issues_repo
+    "#{organization}/#{issues_repo}"
+  end
+
   def create_issue_tracking_webhook! octoclient
     # TODO: should we generate and use a different secret for each hook / team?
     #   how do we look it up on receiving the hook?
@@ -70,10 +74,12 @@ class Team < ActiveRecord::Base
   def assign! octoclient, assignment
     members.each do |member|
       member.solutions.where(assignment: assignment).first_or_create! do |solution|
-        issue = octoclient.open_issue "#{organization}/#{issues_repo}", assignment.title, assignment.as_issue,
+        issue = octoclient.open_issue(
+          fully_qualified_issues_repo, assignment.title, assignment.as_issue,
           assignee: member.github_username, labels: 'homework'
+        )
         solution.number = issue.number
-        solution.repo   = issues_repo
+        solution.repo   = fully_qualified_issues_repo
         solution.status = :assigned
       end
     end

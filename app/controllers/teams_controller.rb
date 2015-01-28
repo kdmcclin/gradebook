@@ -40,6 +40,12 @@ class TeamsController < ApplicationController
     redirect_to :back
   end
 
+  def check
+    team = Team.find params[:id]
+    team.assignments.find_each { |a| a.check! octoclient }
+    redirect_to :back
+  end
+
   private
 
   def create_params

@@ -5,7 +5,8 @@ h1
 
 .btn-group
   = link_to 'Shuffle', team_path(@team, shuffle: true), class: 'btn btn-default'
-  = link_to 'Sync', sync_team_path(@team), class: 'btn btn-default', method: :post
+  = link_to 'Check', check_team_path(@team), class: 'btn btn-default', method: :post
+  = link_to 'Sync Members', sync_team_path(@team), class: 'btn btn-default', method: :post
 
 table.table.table-striped.table-condensed
   thead

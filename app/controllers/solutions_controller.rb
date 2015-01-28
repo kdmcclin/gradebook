@@ -8,7 +8,11 @@ class SolutionsController < ApplicationController
     verify_signature request.body.read
 
     if issue = params[:issue]
+      repo   = params[:repository][:full_name]
+      number = issue[:number]
       status = issue[:state] == "closed" ? :closed : :assigned
+
+      Rails.logger "Received issue hook: #{repo}##{number} - #{status}"
 
       Solution.where(
         number: issue[:number],
@@ -26,6 +30,10 @@ class SolutionsController < ApplicationController
 
   def verify_signature payload_body
     signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV.fetch('GITHUB_WEBHOOK_SECRET'), payload_body)
-    raise "Signatures didn't match!" unless Rack::Utils.secure_compare signature, request.env['HTTP_X_HUB_SIGNATURE']
+    if Rack::Utils.secure_compare signature, request.env['HTTP_X_HUB_SIGNATURE']
+      Rails.logger.debug "Validated webhook signature"
+    else
+      raise "Signatures didn't match!"
+    end
   end
 end

@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       get :shuffle # For picking a random student / teams
       post :activate
       post :sync
+      post :check
     end
   end
 
