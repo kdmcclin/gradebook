@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.2.0'
+ruby '2.1.5'
 
 gem 'rails',        '4.2.0'
 gem 'sass-rails',   '~> 5.0'
@@ -34,5 +34,8 @@ end
 group :production do
   gem 'puma'
   gem 'rails_12factor'
-  gem 'rollbar'
+  # gem 'rollbar'
 end
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
