@@ -235,6 +235,7 @@ Devise.setup do |config|
   config.omniauth :github,
     ENV.fetch('GITHUB_CLIENT_ID'),
     ENV.fetch('GITHUB_CLIENT_SECRET'),
+    :client_options => { :ssl => { :ca_file => "#{Rails.root}/config/ca-bundle.crt" } }, #fixes Open SSL error on windows
     scope: 'user,public_repo'
 
   # ==> Warden configuration
