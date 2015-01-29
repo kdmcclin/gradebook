@@ -39,6 +39,7 @@ GEM
     addressable (2.3.6)
     arel (6.0.0)
     bcrypt (3.1.9)
+    bcrypt (3.1.9-x64-mingw32)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
@@ -95,6 +96,8 @@ GEM
     multipart-post (2.0.0)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
+    nokogiri (1.6.6.2-x64-mingw32)
+      mini_portile (~> 0.6.0)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -116,10 +119,16 @@ GEM
       omniauth (~> 1.2)
     orm_adapter (0.5.0)
     pg (0.18.1)
+    pg (0.18.1-x64-mingw32)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry (0.10.1-x64-mingw32)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+      win32console (~> 1.3)
     pry-rails (0.3.2)
       pry (>= 0.9.10)
     puma (2.11.0)
@@ -163,8 +172,6 @@ GEM
     redcarpet (3.2.2)
     responders (2.0.2)
       railties (>= 4.2.0.alpha, < 5)
-    rollbar (1.4.1)
-      multi_json (~> 1.3)
     sass (3.4.10)
     sass-rails (5.0.1)
       railties (>= 4.0.0, < 5.0)
@@ -206,6 +213,8 @@ GEM
       coffee-rails
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2014.10)
+      tzinfo (>= 1.0.0)
     uglifier (2.7.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
@@ -216,9 +225,11 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (~> 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    win32console (1.3.2)
 
 PLATFORMS
   ruby
+  x64-mingw32
 
 DEPENDENCIES
   coffee-rails (~> 4.1.0)
@@ -238,11 +249,11 @@ DEPENDENCIES
   rails (= 4.2.0)
   rails_12factor
   redcarpet
-  rollbar
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   slim-rails
   spring
   turbolinks
+  tzinfo-data
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
