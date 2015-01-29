@@ -13,3 +13,51 @@
  *= require_tree .
  *= require_self
  */
+
+body {
+	background-image: url('/assets/stressed_linen_@2X.png');
+	color: white;
+}
+
+h1 {
+	font-family: 'Amaranth', sans-serif;
+}
+
+nav.navbar {
+	background: linear-gradient(#304C3E, #23372d);
+	border: 0;
+}
+
+.navbar-default .navbar-nav li a{
+	color: white;
+}
+
+.navbar-default .navbar-nav li a:hover{
+	color: #bbb;
+}
+
+.navbar-default .navbar-nav li a:visited{
+	color: #90b8a4; 
+	/*TODO -- Change this to something visible on the green background.*/
+}
+
+.glyphicon{
+	color: white;
+}
+
+.btn-primary, .btn-success{
+	background: linear-gradient(#304C3E, #23372d);
+	border: 0;
+}
+
+.btn-success{
+	margin-bottom: 1%;
+}
+
+.btn-success:active, .btn-primary:active {
+	background-color: #4a7660;
+}
+
+.table-striped {
+	background-color: rgba(255,255,255,0.1);
+}
