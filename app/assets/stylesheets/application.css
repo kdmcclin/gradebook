@@ -33,12 +33,13 @@ nav.navbar {
 }
 
 .navbar-default .navbar-nav li a:hover{
-	color: #bbb;
+	color: white;
+	text-decoration: underline;
 }
 
 .navbar-default .navbar-nav li a:visited{
 	color: #90b8a4; 
-	/*TODO -- Change this to something visible on the green background.*/
+	/*TODO -- Change this to something more visible on the background.*/
 }
 
 .glyphicon{
